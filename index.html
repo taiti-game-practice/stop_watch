@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Stop&nbsp;Watch</title>
+</head>
+<body>
+	<h1>ストップウォッチ</h1>
+	<div id="sec" style="font-size:128px;">0.00</div>
+	<input type="button" value="start" id="run">
+	<input type="button" value="stop" id="stop">
+	<input type="button" value="reset" id="reset">
+<script type="text/javascript">
+	(function() {
+	var startTime,
+		stopTime,
+		running = false,
+		timerId;
+
+
+		document.getElementById('run').onclick = function() {
+			run();
+		}
+
+		document.getElementById('stop').onclick = function() {
+			stop();
+		}
+
+		document.getElementById('reset').onclick = function() {
+			reset();
+		}
+
+	function run() {
+
+		if (running) return;
+
+		running = true
+
+		if (stopTime) {
+			startTime = startTime + (new Date()).getTime() - stopTime;
+		}
+
+		if (!startTime) {
+			startTime = (new Date()).getTime();
+		}
+
+		timer();
+	}
+
+	function timer() {
+		document.getElementById('sec').innerHTML = (((new Date()).getTime() - startTime) /1000).toFixed(2);
+		timerId = setTimeout(function() {
+			timer();
+		}, 100);
+	}
+
+	function stop() {
+		if (!running) return false;
+
+		running = false;
+		clearTimeout(timerId);
+		stopTime = (new Date()).getTime();
+	}
+
+	function reset() {
+		if (running) return false;
+		startTime = undefined;
+		document.getElementById('sec').innerHTML = '0.00';
+	}
+})();
+</script>
+</body>
+</html>
